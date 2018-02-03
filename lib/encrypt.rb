@@ -22,4 +22,8 @@ class Encrypt
     date_squared = date_squared.to_s.split("")
     date_squared[-4..-1].map { | number | number.to_i }
   end
+
+  def master_key(key, date)
+    
+  end
 end

@@ -37,4 +37,10 @@ class EncryptTest < Minitest::Test
 
     assert_equal 4, encrypt.date_offset.length
   end
+
+  def test_it_can_combine_arrays
+    encrypt = Encrypt.new
+
+    assert_equal [6, 8, 10, 12], encrypt.master_key([4,5,6,7], [2,3,4,5])
+  end 
 end
