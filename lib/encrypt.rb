@@ -8,8 +8,8 @@ class Encrypt
   end
 
   def key_offset(key = random_key(5, 10))             #problematic for edge cases? can we hard code in random_key and still have appropriate tests
-    key.map.with_index do | element , index |
-      "#{element}#{key[index+1]}".to_i
+    key.map.with_index do |element , index|
+      "#{element}#{key[index + 1]}".to_i
     end.shift(4)
   end
 
@@ -20,10 +20,11 @@ class Encrypt
   def date_offset
     date_squared = date_string.to_i ** 2
     date_squared = date_squared.to_s.split("")
-    date_squared[-4..-1].map { | number | number.to_i }
+    date_squared[-4..-1].map { |number| number.to_i }
   end
 
   def master_key(key, date)
-    
+    [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+)}
+    # use #sum method refactor
   end
 end
