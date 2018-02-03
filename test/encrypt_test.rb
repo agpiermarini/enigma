@@ -36,13 +36,13 @@ class EncryptTest < Minitest::Test
   def test_it_can_create_date_string
     encrypt = Encrypt.new
 
-    assert_equal 8, encrypt.date_offset.length
+    assert_equal 6, encrypt.date_string.length
   end
 
   def test_it_can_create_date_offset
     encrypt = Encrypt.new
 
-    assert_equal 4, encrypt.date_offset
+    assert_equal 4, encrypt.date_offset.length
   end
 
 end

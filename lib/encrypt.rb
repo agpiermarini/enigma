@@ -19,7 +19,9 @@ class Encrypt
   end
 
   def date_offset
-      date_string.split("",2)
+      date_squared = date_string.to_i ** 2
+      date_squared = date_squared.to_s.split("")
+      date_squared[-4..-1].map { | number | number.to_i}
   end
 
 end
