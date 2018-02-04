@@ -50,4 +50,11 @@ class EnigmaTest < Minitest::Test
 
     assert_equal expected, enigma.message_chars("hello world")
   end
+
+  def test_it_can_translate_characters_to_correct_position
+    enigma = Enigma.new
+    message = ["h", "e", "l", "l"]
+
+    assert_equal [8, 5, 12, 12], enigma.translate_chars(message)
+  end
 end

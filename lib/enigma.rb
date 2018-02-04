@@ -30,6 +30,5 @@ class Enigma
 
   def message_chars(message_text)
     message_text.chars.each_slice(4).to_a
-
   end
 end
