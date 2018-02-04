@@ -5,13 +5,13 @@ require './lib/dictionary'
 
 class Enigma
   include Dictionary
-  def random_key(length, ceiling)
-    length.times.map { Random.rand(ceiling) }
+  def random_key
+    5.times.map { Random.rand(10) }
   end
 
-  # problematic for edge cases? can we hard code in random_key and still have appropriate tests
+  # any other way to do this while still passing an appropriate test
 
-  def key_offset(key = random_key(5, 10))
+  def key_offset(key = random_key)
     key.map.with_index do |element, index|
       "#{element}#{key[index + 1]}".to_i
     end.shift(4)
@@ -27,7 +27,7 @@ class Enigma
     date_squared[-4..-1].map { |number| number.to_i }
   end
 
-  def master_key(key, date)
+  def master_key(key = key_offset, date = date_offset)
     [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+) }
   end
 
@@ -36,5 +36,13 @@ class Enigma
     message.map do |char|
       CHARACTER_MAP[char]
     end.each_slice(4).to_a
+  end
+
+  def reduce_master_key(key = master_key)
+    key.map do |offset|
+      if offset > CHARACTER_MAP.length
+        offset % CHARACTER_MAP.length
+      end
+    end
   end
 end

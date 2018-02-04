@@ -15,8 +15,8 @@ class EnigmaTest < Minitest::Test
   def test_it_can_create_random_key
     enigma = Enigma.new
 
-    assert_equal 5, enigma.random_key(5, 10).length
-    refute_equal 9, enigma.random_key(5, 10).length
+    assert_equal 5, enigma.random_key.length
+    refute_equal 9, enigma.random_key.length
   end
 
   def test_it_can_create_key_offset
@@ -50,5 +50,12 @@ class EnigmaTest < Minitest::Test
     message = "hello world"
 
     assert_equal expected, enigma.translate_chars(message)
+    binding.pry
+  end
+
+  def test_it_can_reduce_master_key_offsets
+    enigma = Enigma.new
+
+    assert_equal [5, 15, 32, 15], enigma.reduce_master_key([42, 89, 32, 15])
   end
 end
