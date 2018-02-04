@@ -27,4 +27,9 @@ class Enigma
     [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+)}
     # use #sum method refactor
   end
+
+  def message_chars(message_text)
+    message_text.chars.each_slice(4).to_a
+
+  end
 end
