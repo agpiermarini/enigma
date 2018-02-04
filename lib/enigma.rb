@@ -9,8 +9,10 @@ class Enigma
     length.times.map { Random.rand(ceiling) }
   end
 
-  def key_offset(key = random_key(5, 10))             #problematic for edge cases? can we hard code in random_key and still have appropriate tests
-    key.map.with_index do |element , index|
+  # problematic for edge cases? can we hard code in random_key and still have appropriate tests
+
+  def key_offset(key = random_key(5, 10))
+    key.map.with_index do |element, index|
       "#{element}#{key[index + 1]}".to_i
     end.shift(4)
   end
@@ -26,7 +28,7 @@ class Enigma
   end
 
   def master_key(key, date)
-    [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+)}
+    [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+) }
   end
 
   def translate_chars(message)

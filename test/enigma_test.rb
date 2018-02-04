@@ -41,7 +41,7 @@ class EnigmaTest < Minitest::Test
   def test_it_can_combine_arrays
     enigma = Enigma.new
 
-    assert_equal [6, 8, 10, 12], enigma.master_key([4,5,6,7], [2,3,4,5])
+    assert_equal [6, 8, 10, 12], enigma.master_key([4, 5, 6, 7], [2, 3, 4, 5])
   end
 
   def test_it_can_translate_characters_to_correct_position
