@@ -42,6 +42,8 @@ class Enigma
     key.map do |offset|
       if offset > CHARACTER_MAP.length
         offset % CHARACTER_MAP.length
+      else
+        offset
       end
     end
   end

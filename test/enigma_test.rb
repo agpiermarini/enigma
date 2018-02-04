@@ -50,7 +50,6 @@ class EnigmaTest < Minitest::Test
     message = "hello world"
 
     assert_equal expected, enigma.translate_chars(message)
-    binding.pry
   end
 
   def test_it_can_reduce_master_key_offsets
