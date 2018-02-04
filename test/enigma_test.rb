@@ -44,17 +44,11 @@ class EnigmaTest < Minitest::Test
     assert_equal [6, 8, 10, 12], enigma.master_key([4,5,6,7], [2,3,4,5])
   end
 
-  def test_it_splits_array_into_arrays_of_four
-    enigma = Enigma.new
-    expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
-
-    assert_equal expected, enigma.message_chars("hello world")
-  end
-
   def test_it_can_translate_characters_to_correct_position
     enigma = Enigma.new
-    message = ["h", "e", "l", "l"]
+    expected = [[8, 5, 12, 12], [15, 37, 23, 15], [18, 12, 4]]
+    message = "hello world"
 
-    assert_equal [8, 5, 12, 12], enigma.translate_chars(message)
+    assert_equal expected, enigma.translate_chars(message)
   end
 end

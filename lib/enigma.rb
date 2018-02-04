@@ -1,8 +1,10 @@
 require 'Date'
 require 'Time'
 require 'pry'
+require './lib/dictionary'
 
 class Enigma
+  include Dictionary
   def random_key(length, ceiling)
     length.times.map { Random.rand(ceiling) }
   end
@@ -25,10 +27,12 @@ class Enigma
 
   def master_key(key, date)
     [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+)}
-    # use #sum method refactor
   end
 
-  def message_chars(message_text)
-    message_text.chars.each_slice(4).to_a
+  def translate_chars(message)
+    message = message.chars
+    message.map do |char|
+      CHARACTER_MAP[char]
+    end.each_slice(4).to_a
   end
 end
