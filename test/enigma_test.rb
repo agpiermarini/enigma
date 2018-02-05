@@ -15,8 +15,8 @@ class EnigmaTest < Minitest::Test
   def test_it_can_create_random_key
     enigma = Enigma.new
 
-    assert_equal 5, enigma.random_key(5, 10).length
-    refute_equal 9, enigma.random_key(5, 10).length
+    assert_equal 5, enigma.random_key.length
+    refute_equal 9, enigma.random_key.length
   end
 
   def test_it_can_create_key_offset
@@ -41,14 +41,28 @@ class EnigmaTest < Minitest::Test
   def test_it_can_combine_arrays
     enigma = Enigma.new
 
-    assert_equal [6, 8, 10, 12], enigma.master_key([4, 5, 6, 7], [2, 3, 4, 5])
+    assert_equal [6, 8, 10, 12], enigma.total_rotation([4, 5, 6, 7], [2, 3, 4, 5])
   end
 
-  def test_it_can_translate_characters_to_correct_position
+  def test_it_can_find_current_map_values
     enigma = Enigma.new
     expected = [[8, 5, 12, 12], [15, 37, 23, 15], [18, 12, 4]]
     message = "hello world"
 
-    assert_equal expected, enigma.translate_chars(message)
+    assert_equal expected, enigma.current_map_values(message)
+  end
+
+  def test_it_can_reduce_rotation_values
+    enigma = Enigma.new
+
+    assert_equal [5, 15, 32, 15], enigma.reduce_rotation([42, 89, 32, 15])
+  end
+
+  def test_it_converts_current_map_value_to_new_map_value
+    enigma = Enigma.new
+    expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
+    actual = enigma.new_map_values("hello world", [6,36,15,4])
+
+    assert_equal expected, actual
   end
 end
