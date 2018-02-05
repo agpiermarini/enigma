@@ -57,7 +57,7 @@ class Enigma
   # have to hard code it, we just add a rotation array to test
   def new_map_values(message, rotation = reduced_rotation)
     current_positions = current_map_values(message)
-    new_positions = Array.new
+    new_positions = []
     current_positions.each do |letter_set|
       # break this map branch into new method
       letter_set.map.with_index do |position, rotation_index|
