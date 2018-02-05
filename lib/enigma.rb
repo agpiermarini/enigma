@@ -70,6 +70,8 @@ class Enigma
       CHAR_MAP.key(value)
     end.join
   end
+
+  
 end
 
 # find_decrypted_positions
