@@ -90,10 +90,9 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts_with_msg_key_and_date
-    skip
     enigma = Enigma.new
     expected = "14kx8zv0aac"
 
-    assert_equal expected, enigma.encrypt("hello world", 1234, "20518")
+    assert_equal expected, enigma.encrypt("hello world", "12345", "20518")
   end
 end
