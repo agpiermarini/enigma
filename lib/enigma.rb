@@ -27,7 +27,7 @@ class Enigma
     date_squared[-4..-1].map { |number| number.to_i }
   end
 
-  def master_key(key = key_offset, date = date_offset)
+  def total_rotation(key = key_offset, date = date_offset)
     [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+) }
   end
 
@@ -38,13 +38,34 @@ class Enigma
     end.each_slice(4).to_a
   end
 
-  def reduce_master_key(key = master_key)
-    key.map do |offset|
-      if offset > CHARACTER_MAP.length
-        offset % CHARACTER_MAP.length
+  def reduce_total_rotation(rotation_values = total_rotation)
+    rotation_values.map do |rotation_value|
+      if rotation_value > CHARACTER_MAP.length
+        rotation_value % CHARACTER_MAP.length
       else
-        offset
+        rotation_value
       end
     end
+  end
+
+  def translate_to_new_position(message)
+    current_positions = translate_chars(message)
+    rotation = [6,36,15,4]
+    new_positions = Array.new
+    index_counter = 0
+    current_positions.length.times do
+      #index_counter = 0
+      current_positions[index_counter].map.with_index do |position, rotation_index|
+        if position + rotation[rotation_index] < CHARACTER_MAP.length
+          new_positions << position + rotation[rotation_index]
+        elsif position + rotation[rotation_index] > CHARACTER_MAP.length
+          new_positions << (position + rotation[rotation_index]) - CHARACTER_MAP.length
+        else
+          new_positions << position
+        end
+      end
+      index_counter += 1
+    end
+    new_positions
   end
 end

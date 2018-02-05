@@ -41,7 +41,7 @@ class EnigmaTest < Minitest::Test
   def test_it_can_combine_arrays
     enigma = Enigma.new
 
-    assert_equal [6, 8, 10, 12], enigma.master_key([4, 5, 6, 7], [2, 3, 4, 5])
+    assert_equal [6, 8, 10, 12], enigma.total_rotation([4, 5, 6, 7], [2, 3, 4, 5])
   end
 
   def test_it_can_translate_characters_to_correct_position
@@ -52,9 +52,17 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, enigma.translate_chars(message)
   end
 
-  def test_it_can_reduce_master_key_offsets
+  def test_it_can_reduce_total_rotation
     enigma = Enigma.new
 
-    assert_equal [5, 15, 32, 15], enigma.reduce_master_key([42, 89, 32, 15])
+    assert_equal [5, 15, 32, 15], enigma.reduce_total_rotation([42, 89, 32, 15])
+  end
+
+  def test_it_converts_current_position_to_new_position
+    enigma = Enigma.new
+    expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
+    actual = enigma.translate_to_new_position("hello world")
+
+    assert_equal expected, actual
   end
 end
