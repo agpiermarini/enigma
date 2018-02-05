@@ -44,24 +44,24 @@ class EnigmaTest < Minitest::Test
     assert_equal [6, 8, 10, 12], enigma.total_rotation([4, 5, 6, 7], [2, 3, 4, 5])
   end
 
-  def test_it_can_translate_characters_to_correct_position
+  def test_it_can_find_current_map_values
     enigma = Enigma.new
     expected = [[8, 5, 12, 12], [15, 37, 23, 15], [18, 12, 4]]
     message = "hello world"
 
-    assert_equal expected, enigma.translate_chars(message)
+    assert_equal expected, enigma.current_map_values(message)
   end
 
-  def test_it_can_reduce_total_rotation
+  def test_it_can_reduce_rotation_values
     enigma = Enigma.new
 
-    assert_equal [5, 15, 32, 15], enigma.reduce_total_rotation([42, 89, 32, 15])
+    assert_equal [5, 15, 32, 15], enigma.reduce_rotation([42, 89, 32, 15])
   end
 
-  def test_it_converts_current_position_to_new_position
+  def test_it_converts_current_map_value_to_new_map_value
     enigma = Enigma.new
     expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
-    actual = enigma.translate_to_new_position("hello world")
+    actual = enigma.new_map_values("hello world", [6,36,15,4])
 
     assert_equal expected, actual
   end
