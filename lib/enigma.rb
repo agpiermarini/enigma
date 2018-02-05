@@ -81,7 +81,6 @@ class Enigma
       d_offset = date_offset(date)
     end
     rotation = reduce_rotation(total_rotation(k_offset, d_offset))
-    binding.pry
     new_message = new_map_values(message, rotation)
     new_chars(new_message)
   end
