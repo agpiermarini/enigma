@@ -4,7 +4,7 @@ require "./lib/enigma"
 class Encrypt
   attr_accessor :input
 
-  def initialize(input)
+  def initialize
     @input = input
   end
 
@@ -15,9 +15,10 @@ class Encrypt
   output   = ARGV[1]
 
   def read_file(file = input)
-    File.read(file)
+    File.read(file).chomp
   end
 
-  puts "Created '#{output_file}' with the key #{key} and date #{date}"
+
+  puts "Created '#{output}' with the key #{key} and date #{date}"
 
 end
