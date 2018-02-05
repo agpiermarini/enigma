@@ -47,7 +47,7 @@ class Enigma
     end
   end
 
-  def new_map_values(message, rotation = reduced_rotation)
+  def new_map_values(message, rotation = reduce_rotation)
     current_positions = current_map_values(message)
     new_positions = []
     current_positions.each do |letter_set|
@@ -71,7 +71,18 @@ class Enigma
     end.join
   end
 
-  
+  def encrypt(message, key = key_offset, date = date_offset)
+    k_offset = key_offset(key)
+    d_offset = []
+    if date.class == Date
+      d_offset = date_offset
+    else
+      d_offset = date_offset(date)
+    end
+    new_message = new_map_values(message)
+    new_chars(new_message)
+  end
+  redu
 end
 
 # find_decrypted_positions

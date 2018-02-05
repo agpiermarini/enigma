@@ -82,7 +82,15 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, enigma.new_chars(input)
   end
 
+  def test_it_encrypts_message
+    enigma = Enigma.new
+
+    assert_instance_of String, enigma.encrypt("hello world")
+    refute_equal "hello world", enigma.encrypt("hello world")
+  end
+
   def test_it_encrypts_with_msg_key_and_date
+    skip
     enigma = Enigma.new
     expected = "14kx8zv0aac"
 
