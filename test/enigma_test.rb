@@ -65,4 +65,22 @@ class EnigmaTest < Minitest::Test
 
     assert_equal expected, actual
   end
+
+  def test_it_converts_new_values
+    enigma = Enigma.new
+    expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
+
+    assert_equal expected.length, enigma.new_chars(expected).length
+    refute_equal expected, enigma.new_chars(expected)
+  end
+
+  def test_it_converts_new_values_to_correct_keys
+    enigma = Enigma.new
+    input = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
+    expected = "nd0pu9asxks"
+
+    assert_equal expected, enigma.new_chars(input)
+  end
+
+
 end

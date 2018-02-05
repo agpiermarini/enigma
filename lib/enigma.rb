@@ -33,44 +33,42 @@ class Enigma
 
   def current_map_values(message)
     message.chars.map do |char|
-      CHARACTER_MAP[char]
+      CHAR_MAP[char]
     end.each_slice(4).to_a
   end
 
-  # def reduce_total_rotation(rotation_values = total_rotation)
-  #   rotation_values.map do |rotation_value|
-  #     if rotation_value > CHARACTER_MAP.length
-  #       rotation_value % CHARACTER_MAP.length
-  #     else
-  #       rotation_value
-  #     end
-  #   end
-  # end
-
   def reduce_rotation(rotation_values = total_rotation)
-    rotation_values.map do |value|
-      value > CHARACTER_MAP.length ? value % CHARACTER_MAP.length : value
+    rotation_values.map do |rotation|
+      if rotation > CHAR_MAP.length
+        rotation % CHAR_MAP.length
+      else
+        rotation
+      end
     end
   end
 
-  # changed to accept rotation argument for testing purposes, that way we dont
-  # have to hard code it, we just add a rotation array to test
   def new_map_values(message, rotation = reduced_rotation)
     current_positions = current_map_values(message)
     new_positions = []
     current_positions.each do |letter_set|
       # break this map branch into new method
       letter_set.map.with_index do |position, rotation_index|
-        if position + rotation[rotation_index] < CHARACTER_MAP.length
+        if position + rotation[rotation_index] < CHAR_MAP.length
           new_positions << position + rotation[rotation_index]
-        elsif position + rotation[rotation_index] > CHARACTER_MAP.length
-          new_positions << (position + rotation[rotation_index]) - CHARACTER_MAP.length
+        elsif position + rotation[rotation_index] > CHAR_MAP.length
+          new_positions << (position + rotation[rotation_index]) - CHAR_MAP.length
         else
           new_positions << position
         end
       end
     end
     new_positions
+  end
+
+  def new_chars(map_values = new_map_values)
+    map_values.map do |value|
+      CHAR_MAP.key(value)
+    end.join
   end
 end
 

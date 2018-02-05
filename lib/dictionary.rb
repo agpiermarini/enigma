@@ -1,6 +1,6 @@
 module Dictionary
 
-  CHARACTER_MAP ={
+  CHAR_MAP ={
                    "a" => 1,
                    "b" => 2,
                    "c" => 3,
