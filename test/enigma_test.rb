@@ -3,7 +3,7 @@ require 'minitest/pride'
 require 'pry'
 require 'Date'
 require 'Time'
-require './lib/enigma.rb'
+require './lib/enigma'
 
 class EnigmaTest < Minitest::Test
   def test_it_exists
@@ -24,6 +24,13 @@ class EnigmaTest < Minitest::Test
 
     assert_equal [12, 23, 34, 45], enigma.key_offset([1, 2, 3, 4, 5])
     assert_equal [68, 89, 90, 1], enigma.key_offset([6, 8, 9, 0, 1])
+  end
+
+  def test_it_normalizes_key_passed_as_string
+    enigma = Enigma.new
+
+    assert_instance_of Array, enigma.key_normalizer("12345")
+    assert_equal [12, 23, 34, 45], enigma.key_normalizer("12345")
   end
 
   def test_it_can_create_date_string
@@ -58,7 +65,15 @@ class EnigmaTest < Minitest::Test
     assert_equal [5, 15, 32, 15], enigma.reduce_rotation([42, 89, 32, 15])
   end
 
-  def test_it_converts_current_map_value_to_new_map_value
+  def test_it_can_find_encrypt_values
+    enigma = Enigma.new
+    expected = [14, 4, 27, 16]
+    actual = enigma.encrypt_values([8,5,12,12], [6,36,15,4])
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_find_all_encrypt_values
     enigma = Enigma.new
     expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
     actual = enigma.merge_new_encrypt_values("hello world", [6,36,15,4])
@@ -66,27 +81,20 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
-  def test_it_converts_new_values
+  def test_it_converts_encrypt_values
     enigma = Enigma.new
     expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
 
-    assert_equal expected.length, enigma.new_chars(expected).length
-    refute_equal expected, enigma.new_chars(expected)
+    assert_equal expected.length, enigma.new_encrypt_chars(expected).length
+    refute_equal expected, enigma.new_encrypt_chars(expected)
   end
 
-  def test_it_converts_new_values_to_correct_keys
+  def test_it_converts_encrypt_values_to_correct_keys
     enigma = Enigma.new
-    input = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
     expected = "nd0pu9asxks"
+    input = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
 
-    assert_equal expected, enigma.new_chars(input)
-  end
-
-  def test_it_normalizes_key_passed_as_string
-    enigma = Enigma.new
-
-    assert_instance_of Array, enigma.key_normalizer("12345")
-    assert_equal [12, 23, 34, 45], enigma.key_normalizer("12345")
+    assert_equal expected, enigma.new_encrypt_chars(input)
   end
 
   def test_it_encrypts_message_using_default_key_and_date
@@ -102,4 +110,44 @@ class EnigmaTest < Minitest::Test
 
     assert_equal expected, enigma.encrypt("hello world", "12345", "20518")
   end
+
+  def test_it_can_find_decrypt_values
+    enigma = Enigma.new
+    expected = [8, 5, 12, 12]
+    actual = enigma.decrypt_values([14, 4, 27, 16], [6,36,15,4])
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_find_all_decrypt_values
+    enigma = Enigma.new
+    expected = [8, 5, 12, 12, 15, 37, 23, 15, 18, 12, 4]
+    actual = enigma.merge_new_decrypt_values("nd0pu9asxks", [6,36,15,4])
+
+    assert_equal expected, actual
+  end
+
+  def test_it_converts_decrypt_values_to_correct_keys
+    enigma = Enigma.new
+    input = [8, 5, 12, 12, 15, 37, 23, 15, 18, 12, 4]
+    expected = "hello world"
+
+    assert_equal expected, enigma.new_decrypt_chars(input)
+  end
+
+  def test_it_decrypts_message_using_default_key_and_date
+    enigma = Enigma.new
+
+    assert_instance_of String, enigma.decrypt("14kx8zv0aac")
+    refute_equal "14kx8zv0aac", enigma.decrypt("14kx8zv0aac")
+  end
+
+  def test_it_decrypts_with_provided_key_and_date
+    enigma = Enigma.new
+    expected = "hello world"
+
+    assert_equal expected, enigma.decrypt("14kx8zv0aac", "12345", "20518")
+  end
+
+
 end
