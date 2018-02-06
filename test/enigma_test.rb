@@ -61,7 +61,7 @@ class EnigmaTest < Minitest::Test
   def test_it_converts_current_map_value_to_new_map_value
     enigma = Enigma.new
     expected = [14, 4, 27, 16, 21, 36, 1, 19, 24, 11, 19]
-    actual = enigma.new_map_values("hello world", [6,36,15,4])
+    actual = enigma.merge_new_encrypt_values("hello world", [6,36,15,4])
 
     assert_equal expected, actual
   end
