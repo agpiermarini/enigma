@@ -102,5 +102,4 @@ class EnigmaTest < Minitest::Test
 
     assert_equal expected, enigma.encrypt("hello world", "12345", "20518")
   end
-
 end

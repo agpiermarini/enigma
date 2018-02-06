@@ -32,7 +32,7 @@ class Enigma
   end
 
   def current_map_values(message)
-    message.chars.map do |char|
+    message.each_char.map do |char|
       CHAR_MAP[char]
     end.each_slice(4).to_a
   end
