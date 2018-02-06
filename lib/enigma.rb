@@ -5,9 +5,16 @@ require './lib/dictionary'
 
 class Enigma
   include Dictionary
-  def random_key
-    5.times.map { Random.rand(10) }
+  attr_reader :random_key, :date_string
+
+  def initialize
+    @random_key  = 5.times.map { Random.rand(10) }
+    @date_string = Date.today.strftime("%m%d%y")
+
   end
+  # def random_key
+  #   5.times.map { Random.rand(10) }
+  # end
 
   def key_offset(key = random_key)
     key.map.with_index do |element, index|
@@ -15,9 +22,9 @@ class Enigma
     end.shift(4)
   end
 
-  def date_string
-    Date.today.strftime("%m%d%y")
-  end
+  # def date_string
+  #   Date.today.strftime("%m%d%y")
+  # end
 
   def date_offset(date = date_string)
     date_squared = date.to_i ** 2
