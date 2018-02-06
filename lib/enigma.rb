@@ -71,24 +71,15 @@ class Enigma
     end.join
   end
 
-  def encrypt(message, key = key_offset, date = date_offset)
-    k_offset = nil
-    d_offset = nil
-    
-    if key.class == String
+  def key_normalizer(key)
       key = key.split("").map { |number| number.to_i }
-      k_offset = key_offset(key)
-    else
-      k_offset = key
-    end
+      key_offset(key)
+  end
 
-    if date.class == String
-      d_offset = date_offset(date)
-    else
-      d_offset = date
-    end
-
-    rotation = reduce_rotation(total_rotation(k_offset, d_offset))
+  def encrypt(message, key = key_offset, date = date_offset)
+    key = key_normalizer(key) if key.class == String
+    date = date_offset(date) if date.class == String
+    rotation = reduce_rotation(total_rotation(key, date))
     new_message = new_map_values(message, rotation)
     new_chars(new_message)
   end

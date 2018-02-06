@@ -82,17 +82,25 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, enigma.new_chars(input)
   end
 
-  def test_it_encrypts_message
+  def test_it_normalizes_key_passed_as_string
+    enigma = Enigma.new
+
+    assert_instance_of Array, enigma.key_normalizer("12345")
+    assert_equal [12, 23, 34, 45], enigma.key_normalizer("12345")
+  end
+
+  def test_it_encrypts_message_using_default_key_and_date
     enigma = Enigma.new
 
     assert_instance_of String, enigma.encrypt("hello world")
     refute_equal "hello world", enigma.encrypt("hello world")
   end
 
-  def test_it_encrypts_with_msg_key_and_date
+  def test_it_encrypts_with_provided_key_and_date
     enigma = Enigma.new
     expected = "14kx8zv0aac"
 
     assert_equal expected, enigma.encrypt("hello world", "12345", "20518")
   end
+
 end
