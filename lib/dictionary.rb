@@ -1,6 +1,10 @@
 module Dictionary
 
+<<<<<<< HEAD
   CHAR_MAP ={
+=======
+  CHAR_MAP =     {
+>>>>>>> 7bc13cb541f68ff50558d091bb38d5d9bd51b2fa
                    "A" => 1,
                    "B" => 2,
                    "C" => 3,
@@ -26,7 +30,11 @@ module Dictionary
                    "W" => 23,
                    "X" => 24,
                    "Y" => 25,
+<<<<<<< HEAD
                    "Z" => 26
+=======
+                   "Z" => 26,
+>>>>>>> 7bc13cb541f68ff50558d091bb38d5d9bd51b2fa
                    "a" => 27,
                    "b" => 28,
                    "c" => 29,
@@ -84,6 +92,12 @@ module Dictionary
                    ":" => 81,
                    "/" => 82,
                    "?" => 83,
+<<<<<<< HEAD
                    "|" => 84
                  }
+=======
+                   "|" => 84,
+                   "\\" => 85
+                  }
+>>>>>>> 7bc13cb541f68ff50558d091bb38d5d9bd51b2fa
 end

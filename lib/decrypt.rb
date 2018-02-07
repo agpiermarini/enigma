@@ -4,11 +4,11 @@ require "./lib/enigma"
 enigma  = Enigma.new
 input   = ARGV[0]
 output  = ARGV[1]
-key     = enigma.random_key.join
-date    = enigma.date_string
+key     = ARGV[2]
+date    = ARGV[3]
 
 message = File.read(input).chomp
-encrypted_text = enigma.encrypt(message)
-File.open(output, 'w') { |file| file.write(encrypted_text)}
+decrypted_text = enigma.decrypt(message, key, date)
+File.open(output, 'w') { |file| file.write(decrypted_text)}
 
 puts "Created '#{output}' with the key #{key} and date #{date}"
