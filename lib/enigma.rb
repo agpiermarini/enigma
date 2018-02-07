@@ -5,11 +5,14 @@ require './lib/dictionary'
 
 class Enigma
   include Dictionary
-  attr_reader :random_key, :date_string
+  attr_reader   :random_key,
+                :date_string
+  attr_accessor :cracked_key
 
   def initialize
     @random_key  = 5.times.map { Random.rand(10) }
     @date_string = Date.today.strftime("%m%d%y")
+    @cracked_key = nil
   end
 
   def key_offset(key = random_key)
@@ -117,6 +120,7 @@ class Enigma
       key_offset = key_normalizer(number.to_s)
       date_offset = date_offset(date)
       decrypted_text = decrypt(message, key_offset, date_offset)
+      @cracked_key = number
       return number if decrypted_text[-7..-1] == "..end.."
     end
   end
