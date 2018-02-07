@@ -110,6 +110,16 @@ class Enigma
     new_message = merge_new_decrypt_values(message, rotation)
     new_decrypt_chars(new_message)
   end
+
+  def crack(message, date)
+    check_nums = Array (10000..99999)
+    check_nums.each do |number|
+      key_offset = key_normalizer(number.to_s)
+      date_offset = date_offset(date)
+      decrypted_text = decrypt(message, key_offset, date_offset)
+      return number if decrypted_text[-7..-1] == "..end.."
+    end
+  end
 end
 
 # find_decrypted_positions

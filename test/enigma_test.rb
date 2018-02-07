@@ -197,4 +197,11 @@ class EnigmaTest < Minitest::Test
 
     assert_equal expected, enigma.decrypt("14kx8zv0aac", "12345", "20518")
   end
+
+  def test_it_can_find_key
+    enigma = Enigma.new
+    expected = 34591
+
+    assert_equal expected, enigma.crack("(:Nv;bYy?CF)R:PnRc", "020718")
+  end
 end
