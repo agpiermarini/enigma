@@ -11,7 +11,7 @@ class Enigma
 
   def initialize
     @random_key  = 5.times.map { Random.rand(10) }
-    @date_string = Date.today.strftime("%m%d%y")
+    @date_string = Date.today.strftime("%d%m%y")
     @cracked_key = nil
   end
 
@@ -125,6 +125,3 @@ class Enigma
     end
   end
 end
-
-# find_decrypted_positions
-# find_encrypted_positions

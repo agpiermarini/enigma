@@ -85,6 +85,7 @@ class EnigmaTest < Minitest::Test
 
 
   def test_it_can_reduce_rotation_values
+    skip
     enigma = Enigma.new
 
     assert_equal [42, 4, 32, 15], enigma.reduce_rotation([42, 89, 32, 15])
