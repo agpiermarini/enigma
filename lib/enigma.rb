@@ -33,17 +33,7 @@ class Enigma
   end
 
   def total_rotation(key = key_offset, date = date_offset)
-    [key, date].transpose.map { |sub_arrays| sub_arrays.reduce(:+) }
-  end
-
-  def reduce_rotation(rotation_values = total_rotation)
-    rotation_values.map do |rotation|
-      if rotation > CHAR_MAP.length
-        rotation % CHAR_MAP.length
-      else
-        rotation
-      end
-    end
+    [key, date].transpose.map { |sub_arrays| sub_arrays.sum }
   end
 
   def current_map_values(message)
@@ -52,17 +42,18 @@ class Enigma
     end.each_slice(4).to_a
   end
 
-  def encrypt_values(letter_set, rotation = reduce_rotation)
+  def encrypt_values(letter_set, rotation = total_rotation)
     letter_set.map.with_index do |position, rotation_index|
-      if position + rotation[rotation_index] <= CHAR_MAP.length
-        position + rotation[rotation_index]
+      new_map_position = position + rotation[rotation_index]
+      if new_map_position > CHAR_MAP.length
+        new_map_position % CHAR_MAP.length
       else
-        (position + rotation[rotation_index]) - CHAR_MAP.length
+        new_map_position
       end
     end
   end
 
-  def merge_new_encrypt_values(message, rotation = reduce_rotation)
+  def merge_new_encrypt_values(message, rotation = total_rotation)
     current_positions = current_map_values(message)
     current_positions.map do |letter_set|
       encrypt_values(letter_set, rotation)
@@ -78,22 +69,23 @@ class Enigma
   def encrypt(message, key = key_offset, date = date_offset)
     key = key_normalizer(key) if key.class == String
     date = date_offset(date) if date.class == String
-    rotation = reduce_rotation(total_rotation(key, date))
+    rotation = total_rotation(key, date)
     new_message = merge_new_encrypt_values(message, rotation)
     new_encrypt_chars(new_message)
   end
 
-  def decrypt_values(letter_set, rotation = reduce_rotation)
+  def decrypt_values(letter_set, rotation = total_rotation)
     letter_set.map.with_index do |position, rotation_index|
-      if position - rotation[rotation_index] <= 0
-        (position - rotation[rotation_index]) + CHAR_MAP.length
+      new_map_position = position - rotation[rotation_index]
+      if new_map_position > 0
+        new_map_position % CHAR_MAP.length
       else
-        position - rotation[rotation_index]
+        new_map_position + CHAR_MAP.length
       end
     end
   end
 
-  def merge_new_decrypt_values(message, rotation = reduce_rotation)
+  def merge_new_decrypt_values(message, rotation = total_rotation)
     current_positions = current_map_values(message)
     current_positions.map do |letter_set|
       decrypt_values(letter_set, rotation)
@@ -109,7 +101,7 @@ class Enigma
   def decrypt(message, key = key_offset, date = date_offset)
     key = key_normalizer(key) if key.class == String
     date = date_offset(date) if date.class == String
-    rotation = reduce_rotation(total_rotation(key, date))
+    rotation = total_rotation(key, date)
     new_message = merge_new_decrypt_values(message, rotation)
     new_decrypt_chars(new_message)
   end

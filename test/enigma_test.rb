@@ -1,3 +1,4 @@
+require_relative 'helper_test'
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
