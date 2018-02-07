@@ -82,10 +82,10 @@ class Enigma
 
   def decrypt_values(letter_set, rotation = reduce_rotation)
     letter_set.map.with_index do |position, rotation_index|
-      if position - rotation[rotation_index] >= 0
-        position - rotation[rotation_index]
-      else
+      if position - rotation[rotation_index] <= 0
         (position - rotation[rotation_index]) + CHAR_MAP.length
+      else
+        position - rotation[rotation_index]
       end
     end
   end
