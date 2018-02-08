@@ -37,14 +37,17 @@ class Enigma
     @decryptor.new_decrypt_chars(new_message)
   end
 
-  def crack(message, date)
+  def crack(message, date = @keygen.date_offset)
     check_nums = Array (00001..99999)
     check_nums.each do |number|
       key_offset = @keygen.key_normalizer(number.to_s)
       date_offset = @keygen.date_offset(date)
       decrypted_text = decrypt(message, key_offset, date_offset)
       @cracked_key = number
-      return number if decrypted_text[-7..-1] == "..end.."
+      if decrypted_text[-7..-1] == "..end.."
+        puts decrypted_text
+        return number
+      end
     end
   end
 end
