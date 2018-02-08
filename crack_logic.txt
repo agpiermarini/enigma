@@ -1,0 +1,113 @@
+eiPGI5cK7zs wdE[IuWZIycO(hsQeLMTIiPfI0mb/<Lg;vscH]piD*le\\<3wRAzsN/voTO!nJtVFJ>
+
+\The quick BROWN fox jumpS o\/er Th3 l4zy d4wg 0987654321 )(*&^%$#@!)\?..end..
+
+encrypted with key of 30657 and 020618
+date offset = 1,9,2,4
+key offset of 30,6,65,57
+total offset of [31, 15, 67, 61]
+
+first find values of ..end.. encrypted
+
+next find values of ..end.. unencrypted
+
+subtract one from another in such a way as to get arr length of 7 all positive numbers
+
+figure out how it lines up with the date offset array..
+    if modulo 0, [-4..-1]
+    if modulo 1, [-5..-2]
+    if modulo 2, [-6..-3]
+    if modulo 3, [-7..-4]
+
+    a = starting index
+    b = ending index
+
+    index_offset (message.length % CHAR_MAP.length)
+    a = -4 - (index_offset)
+    b = -1 - (index_offset)
+
+
+###########################################################
+    key_offset = []
+    total_offset_array[a..b].map.with_index |offset, index|
+      key_offset << offset - date_offset[index]
+    end
+
+    key_offset.join.digits.reverse return if index odd
+
+    def decrypted_keyword_values
+      string = "..end.."
+      string.split("").map { |char| CHAR_MAP[char] }
+    end
+
+    def encrypted_keyword_values(message)
+      string = message[-7..-1]
+      string.split("").map { |char| CHAR_MAP[char] }
+    end
+
+    def keyword_offset(message)
+      encrypted_keyword_values(message).map.with_index do | value, index|
+        (value - decrypted_keyword_values[index])
+      end
+    end
+
+    def normalize_keyword_offset(message)  #necessary..seems to work withotu?
+      keyword_offset(message).map do |value|
+        value #+ CHAR_MAP.length)# % CHAR_MAP.length
+      end
+    end
+
+    def shift_keyword_offset(message)
+      adjustment_value = 3 - (message.length % 4)
+      normalize_keyword_offset(message).drop(adjustment_value)
+    end
+
+    def key_offset_crack(message, date = date_offset)
+      date_offset.map.with_index do |value, index|
+        (shift_keyword_offset(message)[index] - value + CHAR_MAP.length) % CHAR_MAP.length
+      end
+    end
+
+
+################################
+def test_it_can_find_decrypted_keyword_values
+  enigma = Enigma.new
+
+  assert_equal [64, 64, 31, 40, 30, 64, 64], enigma.decrypted_keyword_values
+end
+
+def test_it_can_find_encrypted_keyword_values
+  enigma = Enigma.new
+
+  message = "<<vZj?rZR&tLj<nZj*rLMVpY\\(xLCV9PS<]VM/.rS<rrJ[.r\\|qrJ[.dNCqsk[0KkW"
+  assert_equal [74, 8, 43, 37, 40, 8, 76], enigma.encrypted_keyword_values(message)
+end
+
+def test_it_can_determine_total_offset_using_keyword_and_date
+  enigma = Enigma.new
+
+  message = "<<vZj?rZR&tLj<nZj*rLMVpY\\(xLCV9PS<]VM/.rS<rrJ[.r\\|qrJ[.dNCqsk[0KkW"
+  assert_equal [10, 29, 12, 82, 10, 29, 12], enigma.keyword_offset(message)
+end
+
+def test_it_can_calculate_key_offset_of_keyword
+skip
+  enigma = Enigma.new
+
+  message = "<<vZj?rZR&tLj<nZj*rLMVpY\\(xLCV9PS<]VM/.rS<rrJ[.r\\|qrJ[.dNCqsk[0KkW"
+  assert_equal [40, 10, 46, 22, 6, 10, 79], enigma.keys(message)
+end
+
+def test_it_can_align_keyword_offset_with_date_offset
+  enigma = Enigma.new
+
+  message = "<<vZj?rZR&tLj<nZj*rLMVpY\\(xLCV9PS<]VM/.rS<rrJ[.r\\|qrJ[.dNCqsk[0KkW"
+  assert_equal [29, 12, 82, 10, 29, 12], enigma.shift_keyword_offset(message)
+end
+
+def test_it_can_calculate_key_offsets_with_only_date
+  enigma = Enigma.new
+
+  message = "<<vZj?rZR&tLj<nZj*rLMVpY\\(xLCV9PS<]VM/.rS<rrJ[.r\\|qrJ[.dNCqsk[0KkW"
+  assert_equal [64, 46, 64, 46], enigma.key_offset_crack(message, "020718")
+end

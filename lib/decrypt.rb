@@ -1,5 +1,5 @@
-require "pry"
-require "./lib/enigma"
+require 'pry'
+require './lib/enigma'
 
 enigma  = Enigma.new
 input   = ARGV[0]
