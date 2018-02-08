@@ -17,11 +17,11 @@ class Decryptor
   def decrypt_values(letter_set, rotation = @keygen.total_rotation)
     letter_set.map.with_index do |position, rotation_index|
       new_map_position = position - rotation[rotation_index]
-      adjust_new_map_position(new_map_position)
+      adjust_new_map_value(new_map_position)
     end
   end
 
-  def adjust_new_map_position(map_position)
+  def adjust_new_map_value(map_position)
     if map_position <= 0
       map_position + CHAR_MAP.length
     elsif map_position == CHAR_MAP.length

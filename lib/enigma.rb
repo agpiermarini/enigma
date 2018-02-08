@@ -41,12 +41,10 @@ class Enigma
     check_nums = Array (00001..99999)
     check_nums.each do |number|
       key_offset = @keygen.key_normalizer(number.to_s)
-      date_offset = @keygen.date_offset(date)
-      decrypted_text = decrypt(message, key_offset, date_offset)
-      @cracked_key = number
+      decrypted_text = decrypt(message, key_offset, date)
       if decrypted_text[-7..-1] == "..end.."
-        puts decrypted_text
-        return number
+        @cracked_key = number.to_s.rjust(5,"0")
+        return decrypted_text
       end
     end
   end

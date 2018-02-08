@@ -37,5 +37,4 @@ class KeyGenTest < Minitest::Test
 
     assert_equal [6, 8, 10, 12], k.total_rotation([4, 5, 6, 7], [2, 3, 4, 5])
   end
-
 end

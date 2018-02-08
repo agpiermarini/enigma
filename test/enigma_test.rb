@@ -72,8 +72,8 @@ class EnigmaTest < Minitest::Test
 
   def test_it_can_find_key
     enigma = Enigma.new
-    expected = 34591
+    enigma.crack("(:Nv;bYy?CF)R:PnRc", "020718")
 
-    assert_equal expected, enigma.crack("(:Nv;bYy?CF)R:PnRc", "020718")
+    assert_equal "34591", enigma.cracked_key
   end
 end
