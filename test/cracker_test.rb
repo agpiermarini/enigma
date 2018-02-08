@@ -8,10 +8,10 @@ require './lib/crack'
 class CrackerTest < Minitest::Test
 
   def test_it_can_find_key
-    enigma = Cracker.new
+    c = Cracker.new
     expected = 34591
 
-    assert_equal expected, enigma.crack("(:Nv;bYy?CF)R:PnRc", "020718")
+    assert_equal expected, c.crack("(:Nv;bYy?CF)R:PnRc", "020718")
   end
 
 end
