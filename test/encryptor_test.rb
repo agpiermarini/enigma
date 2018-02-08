@@ -91,7 +91,7 @@ class EncryptorTest < Minitest::Test
     assert_equal expected, e.new_encrypt_chars(input)
   end
 
-  def test_it_can_find_all_encrypt_values
+  def test_it_can_find_all_encrypt_values_with_symbols
     e = Encryptor.new
     expected = [40, 7, 53, 4, 59, 14, 64, 57, 50, 36, 8, 3, 69, 85]
     actual = e.merge_new_encrypt_values("h3l\\0 w0r\\<| w", [6,36,15,4])

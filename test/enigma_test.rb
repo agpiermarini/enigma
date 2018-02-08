@@ -13,7 +13,7 @@ class EnigmaTest < Minitest::Test
   def test_it_can_find_encrypt_values
     e = Encryptor.new
     expected = [14, 41, 27, 16]
-    actual = e.encrypt_values([8,5,12,12], [6,36,15,4])
+    actual = e.encrypt_values([8, 5, 12, 12], [6, 36, 15, 4])
 
     assert_equal expected, actual
   end
@@ -21,7 +21,7 @@ class EnigmaTest < Minitest::Test
   def test_it_can_find_number_and_symbol_encrypt_values
     e = Encryptor.new
     expected = [6, 21, 74, 60]
-    actual = e.encrypt_values([85,70,59,56], [6,36,15,4])
+    actual = e.encrypt_values([85, 70, 59, 56], [6, 36, 15, 4])
 
     assert_equal expected, actual
   end
@@ -36,8 +36,9 @@ class EnigmaTest < Minitest::Test
   def test_it_encrypts_with_provided_key_and_date
     enigma = Enigma.new
     expected = "14)B8D\\E..@"
+    actual = enigma.encrypt("hello world", [12, 23, 34, 45], [8, 3, 2, 4])
 
-    assert_equal expected, enigma.encrypt("hello world", [12,23,34,45], [8,3,2,4])
+    assert_equal expected, actual
   end
 
   def test_it_can_find_decrypt_values
