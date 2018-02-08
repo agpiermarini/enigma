@@ -1,4 +1,3 @@
-require 'pry'
 require './lib/dictionary'
 require './lib/key_gen'
 
@@ -18,11 +17,17 @@ class Decryptor
   def decrypt_values(letter_set, rotation = @keygen.total_rotation)
     letter_set.map.with_index do |position, rotation_index|
       new_map_position = position - rotation[rotation_index]
-      if new_map_position > 0
-        new_map_position % CHAR_MAP.length
-      else
-        new_map_position + CHAR_MAP.length
-      end
+      adjust_new_map_value(new_map_position)
+    end
+  end
+
+  def adjust_new_map_value(map_position)
+    if map_position <= 0
+      map_position + CHAR_MAP.length
+    elsif map_position == CHAR_MAP.length
+      map_position
+    else
+      map_position % CHAR_MAP.length
     end
   end
 

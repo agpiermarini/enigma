@@ -1,6 +1,5 @@
 require 'Date'
 require 'Time'
-require 'pry'
 
 class KeyGen
   attr_reader   :random_key,
@@ -11,15 +10,15 @@ class KeyGen
     @date_string = Date.today.strftime("%d%m%y")
   end
 
+  def key_normalizer(key)
+    key = key.rjust(5, "0").split("").map { |number| number.to_i }
+    key_offset(key)
+  end
+
   def key_offset(key = random_key)
     key.map.with_index do |element, index|
       "#{element}#{key[index + 1]}".to_i
     end.shift(4)
-  end
-
-  def key_normalizer(key)
-    key = key.split("").map { |number| number.to_i }
-    key_offset(key)
   end
 
   def date_offset(date = date_string)
