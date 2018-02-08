@@ -1,4 +1,4 @@
-require 'pry'
+require './lib/dictionary'
 require './lib/key_gen'
 
 class Encryptor

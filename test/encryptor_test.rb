@@ -1,26 +1,9 @@
+require './test/helper_test'
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'pry'
 require './lib/encryptor'
 
 class EncryptorTest < Minitest::Test
-
-  def test_it_can_find_encrypt_values
-    e = Encryptor.new
-    expected = [14, 41, 27, 16]
-    actual = e.encrypt_values([8,5,12,12], [6,36,15,4])
-
-    assert_equal expected, actual
-  end
-
-  def test_it_can_find_number_and_symbol_encrypt_values
-    e = Encryptor.new
-    expected = [6, 21, 74, 60]
-    actual = e.encrypt_values([85,70,59,56], [6,36,15,4])
-
-    assert_equal expected, actual
-  end
-
   def test_it_can_find_all_encrypt_values
     e = Encryptor.new
     expected = [40, 67, 53, 42, 47, 14, 64, 45, 50, 74, 45]
@@ -61,20 +44,6 @@ class EncryptorTest < Minitest::Test
     assert_equal expected, e.new_encrypt_chars(input)
   end
 
-  def test_it_encrypts_message_using_default_key_and_date
-    e = Encryptor.new
-
-    assert_instance_of String, e.encrypt("hello world")
-    refute_equal "hello world", e.encrypt("hello world")
-  end
-
-  def test_it_encrypts_with_provided_key_and_date
-    e = Encryptor.new
-    expected = "14)B8D\\E..@"
-
-    assert_equal expected, e.encrypt("hello world", "12345", "20518")
-  end
-
   def test_it_can_find_current_map_values
     e = Encryptor.new
     expected = [[34, 31, 38, 38], [41, 63, 49, 41], [44, 38, 30]]
@@ -106,5 +75,4 @@ class EncryptorTest < Minitest::Test
 
     assert_equal expected, e.current_map_values(message)
   end
-
 end
