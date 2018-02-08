@@ -1,116 +1,40 @@
-require 'Date'
-require 'Time'
 require 'pry'
 require './lib/dictionary'
+require './lib/encryptor'
+require './lib/decryptor'
 
 class Enigma
-  include Dictionary
-  attr_reader   :random_key,
-                :date_string
-  attr_accessor :cracked_key
+
+  attr_accessor   :cracked_key
 
   def initialize
-    @random_key  = 5.times.map { Random.rand(10) }
-    @date_string = Date.today.strftime("%d%m%y")
-    @cracked_key = nil
+    @keygen       = KeyGen.new
+    @encryptor    = Encryptor.new
+    @decryptor    = Decryptor.new
+    @cracked_key  = nil
   end
 
-  def key_offset(key = random_key)
-    key.map.with_index do |element, index|
-      "#{element}#{key[index + 1]}".to_i
-    end.shift(4)
+  def encrypt(message, key = keygen.key_offset, date = keygen.date_offset)
+    key = keygen.key_normalizer(key) if key.class == String
+    date = keygen.date_offset(date) if date.class == String
+    rotation = keygen.total_rotation(key, date)
+    new_message = @encryptor.merge_new_encrypt_values(message, rotation)
+    @encryptor.new_encrypt_chars(new_message)
   end
 
-  def key_normalizer(key)
-    key = key.split("").map { |number| number.to_i }
-    key_offset(key)
-  end
-
-  def date_offset(date = date_string)
-    date_squared = date.to_i ** 2
-    date_squared = date_squared.to_s.split("")
-    date_squared[-4..-1].map { |number| number.to_i }
-  end
-
-  def total_rotation(key = key_offset, date = date_offset)
-    [key, date].transpose.map { |sub_arrays| sub_arrays.sum }
-  end
-
-  def current_map_values(message)
-    message.each_char.map do |char|
-      CHAR_MAP[char]
-    end.each_slice(4).to_a
-  end
-
-  def encrypt_values(letter_set, rotation = total_rotation)
-    letter_set.map.with_index do |position, rotation_index|
-      new_map_position = position + rotation[rotation_index]
-      if new_map_position > CHAR_MAP.length
-        new_map_position % CHAR_MAP.length
-      else
-        new_map_position
-      end
-    end
-  end
-
-  def merge_new_encrypt_values(message, rotation = total_rotation)
-    current_positions = current_map_values(message)
-    current_positions.map do |letter_set|
-      encrypt_values(letter_set, rotation)
-    end.flatten
-  end
-
-  def new_encrypt_chars(map_values = merge_new_encrypt_values)
-    map_values.map do |value|
-      CHAR_MAP.key(value)
-    end.join
-  end
-
-  def encrypt(message, key = key_offset, date = date_offset)
-    key = key_normalizer(key) if key.class == String
-    date = date_offset(date) if date.class == String
-    rotation = total_rotation(key, date)
-    new_message = merge_new_encrypt_values(message, rotation)
-    new_encrypt_chars(new_message)
-  end
-
-  def decrypt_values(letter_set, rotation = total_rotation)
-    letter_set.map.with_index do |position, rotation_index|
-      new_map_position = position - rotation[rotation_index]
-      if new_map_position > 0
-        new_map_position % CHAR_MAP.length
-      else
-        new_map_position + CHAR_MAP.length
-      end
-    end
-  end
-
-  def merge_new_decrypt_values(message, rotation = total_rotation)
-    current_positions = current_map_values(message)
-    current_positions.map do |letter_set|
-      decrypt_values(letter_set, rotation)
-    end.flatten
-  end
-
-  def new_decrypt_chars(map_values = merge_new_decrypt_values)
-    map_values.map do |value|
-      CHAR_MAP.key(value)
-    end.join
-  end
-
-  def decrypt(message, key = key_offset, date = date_offset)
-    key = key_normalizer(key) if key.class == String
-    date = date_offset(date) if date.class == String
-    rotation = total_rotation(key, date)
-    new_message = merge_new_decrypt_values(message, rotation)
-    new_decrypt_chars(new_message)
+  def decrypt(message, key = keygen.key_offset, date = keygen.date_offset)
+    key = keygen.key_normalizer(key) if key.class == String
+    date = keygen.date_offset(date) if date.class == String
+    rotation = keygen.total_rotation(key, date)
+    new_message = @decryptor.merge_new_decrypt_values(message, rotation)
+    @decryptor.new_decrypt_chars(new_message)
   end
 
   def crack(message, date)
     check_nums = Array (10000..99999)
     check_nums.each do |number|
-      key_offset = key_normalizer(number.to_s)
-      date_offset = date_offset(date)
+      key_offset = keygen.key_normalizer(number.to_s)
+      date_offset = keygen.date_offset(date)
       decrypted_text = decrypt(message, key_offset, date_offset)
       @cracked_key = number
       return number if decrypted_text[-7..-1] == "..end.."
