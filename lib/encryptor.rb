@@ -1,5 +1,5 @@
 require 'pry'
-require './lib/keygen'
+require './lib/key_gen'
 
 class Encryptor
   include Dictionary

@@ -1,6 +1,6 @@
 require 'pry'
 require './lib/dictionary'
-require './lib/keygen'
+require './lib/key_gen'
 
 class Decryptor
   include Dictionary
@@ -26,7 +26,7 @@ class Decryptor
     end
   end
 
-  def merge_new_decrypt_values(message, rotation = total_rotation)
+  def merge_new_decrypt_values(message, rotation = @keygen.total_rotation)
     current_positions = current_map_values(message)
     current_positions.map do |letter_set|
       decrypt_values(letter_set, rotation)
