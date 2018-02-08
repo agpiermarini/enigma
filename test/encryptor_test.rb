@@ -1,8 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
-require 'Date'
-require 'Time'
 require './lib/encryptor'
 
 class EncryptorTest < Minitest::Test
@@ -76,4 +74,37 @@ class EncryptorTest < Minitest::Test
 
     assert_equal expected, e.encrypt("hello world", "12345", "20518")
   end
+
+  def test_it_can_find_current_map_values
+    e = Encryptor.new
+    expected = [[34, 31, 38, 38], [41, 63, 49, 41], [44, 38, 30]]
+    message = "hello world"
+
+    assert_equal expected, e.current_map_values(message)
+  end
+
+  def test_it_can_find_capital_letters
+    e = Encryptor.new
+    expected = [[1, 2, 3, 4], [5, 6]]
+    message = "ABCDEF"
+
+    assert_equal expected, e.current_map_values(message)
+  end
+
+  def test_it_can_find_numbers
+    e = Encryptor.new
+    expected = [[54, 55, 56, 57], [58]]
+    message = "12345"
+
+    assert_equal expected, e.current_map_values(message)
+  end
+
+  def test_it_can_find_symbols
+    e = Encryptor.new
+    expected = [[66, 67, 68, 69], [70, 85]]
+    message = '@#$%^\\'
+
+    assert_equal expected, e.current_map_values(message)
+  end
+
 end
