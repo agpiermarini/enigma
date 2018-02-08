@@ -1,3 +1,5 @@
+require 'Date'
+require 'Time'
 require './lib/dictionary'
 require './lib/encryptor'
 require './lib/decryptor'
@@ -18,6 +20,9 @@ class Enigma
   end
 
   def encrypt(message, key = @keygen.key_offset, date = @keygen.date_offset)
+    key = @keygen.key_normalizer(key) if key.class == String
+    date = @keygen.date_offset(date) if date.class == String
+    date = @keygen.date_offset(date.strftime("%d%m%y")) if date.class == Date
     rotation = @keygen.total_rotation(key, date)
     new_message = @encryptor.merge_new_encrypt_values(message, rotation)
     @encryptor.new_encrypt_chars(new_message)
@@ -26,6 +31,7 @@ class Enigma
   def decrypt(message, key = @keygen.key_offset, date = @keygen.date_offset)
     key = @keygen.key_normalizer(key) if key.class == String
     date = @keygen.date_offset(date) if date.class == String
+    date = @keygen.date_offset(date.strftime("%d%m%y")) if date.class == Date
     rotation = @keygen.total_rotation(key, date)
     new_message = @decryptor.merge_new_decrypt_values(message, rotation)
     @decryptor.new_decrypt_chars(new_message)
