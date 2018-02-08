@@ -1,5 +1,4 @@
 module Dictionary
-
   CHAR_MAP =     {
                    'A' => 1,
                    'B' => 2,

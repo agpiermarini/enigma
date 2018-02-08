@@ -1,4 +1,3 @@
-require 'pry'
 require './lib/dictionary'
 require './lib/encryptor'
 require './lib/decryptor'
@@ -33,7 +32,7 @@ class Enigma
   end
 
   def crack(message, date)
-    check_nums = Array (10000..99999)
+    check_nums = Array (00001..99999)
     check_nums.each do |number|
       key_offset = @keygen.key_normalizer(number.to_s)
       date_offset = @keygen.date_offset(date)

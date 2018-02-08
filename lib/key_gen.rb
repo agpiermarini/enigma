@@ -9,9 +9,9 @@ class KeyGen
     @random_key  = 5.times.map { Random.rand(10) }
     @date_string = Date.today.strftime("%d%m%y")
   end
-  
+
   def key_normalizer(key)
-    key = key.split("").map { |number| number.to_i }
+    key = key.rjust(5, "0").split("").map { |number| number.to_i }
     key_offset(key)
   end
 
